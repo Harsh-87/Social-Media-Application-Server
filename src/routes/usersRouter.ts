@@ -27,11 +27,13 @@ router.post('/signup', (req, res, next) => {
         res.json({ err: err });
       }
       else {
-        console.log(user);
         if (req.body.firstname)
           user.firstname = req.body.firstname;
         if (req.body.lastname)
           user.lastname = req.body.lastname;
+        if (req.body.email)
+          user.email = req.body.email;
+        user.avatar = "https://i.pravatar.cc/150?img="+Math.floor(Math.random() * 30 + Math.random() * 30).toString();
         user.save((err, user) => {
           if (err) {
             res.statusCode = 500;
@@ -42,7 +44,7 @@ router.post('/signup', (req, res, next) => {
           passport.authenticate('local')(req, res, () => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({ success: true, status: 'Registration Successful!' });
+            res.json({ success: true, status: 'Registration Successful!', user: user });
           });
         });
       }
@@ -52,7 +54,7 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', passport.authenticate('local'), (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({ success: true, status: 'You are successfully logged in!' });
+  res.json({ success: true, status: 'You are successfully logged in!', user: req.user });
 });
 
 router.get('/logout', (req, res, next) => {

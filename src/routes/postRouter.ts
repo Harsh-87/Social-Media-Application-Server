@@ -1,36 +1,60 @@
 import express = require('express');
 import bodyParser = require('body-parser');
+import path = require("path");
 var authenticate = require('../authenticate');
 var Posts = require('../models/posts');
-
+import multer = require("multer");
 const postRouter = express.Router();
 
 postRouter.use(bodyParser.json());
 
-// Routes for posts
+const storage = multer.diskStorage({
+    destination: "public/Images",
+    filename: function (req, file, cb) {
+        cb(null, (req.user['_id']) + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
+// Routes for posts
 postRouter.route('/')
     .get(authenticate.verifyUser, (req, res, next) => {
         // Finds all the posts created
         Posts.find({})
+            .sort({ "createdAt": -1 })
             .populate('author')
             .populate('likes.author')
             .populate('comments.author')
-            .then((postes) => {
+            .then((posts) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(postes);
+                res.json(posts);
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .post(authenticate.verifyUser, (req, res, next) => {
+    .post(authenticate.verifyUser, upload.single('image'), (req, res, next) => {
         // Creates a post by user who is running this request
+        console.log(req.body);
         req.body.author = req.user['_id'];
-        Posts.create(req.body)
+        if(req.file){
+            req.body.image = req.file.path ? req.file.path.toString().slice(7) : undefined;
+        }else{
+            req.body.image = undefined;
+        }
+        console.log(req.body);
+        const post = new Posts(req.body);
+        post.save()
             .then((post) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(post);
+                Posts.findById(post._id)
+                    .populate('author')
+                    .populate('likes.author')
+                    .populate('comments.author')
+                    .then((post) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(post);
+                    }, (err) => next(err))
+                    .catch((err) => next(err));
             }, (err) => next(err))
             .catch((err) => next(err));
     })

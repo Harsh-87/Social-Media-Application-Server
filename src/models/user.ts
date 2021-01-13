@@ -11,6 +11,14 @@ var User = new Schema({
         type: String,
         default: ''
     },
+    email: {
+        type: String,
+        default: ''
+    },
+    avatar: {
+        type: String,
+        default: ''
+    }
 });
 
 // Adds local strategy plugin to this schema which means username and password fields will be added to the above schema and will be saved in database in encrypted form

@@ -4,6 +4,7 @@ import path = require('path');
 import logger = require('morgan');
 import passport = require('passport');
 import session = require('express-session');
+import multer = require("multer");
 var authenticate = require('./authenticate');
 var config = require('./config');
 import mongoose = require("mongoose");
@@ -36,6 +37,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static(path.join(__dirname,'..', 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -59,7 +61,7 @@ app.use(function (err, req, res, next) {
     res.send(err.message);
 });
 
-const port = 3000;
+const port = 5000;
 app.listen(port, () => {
     return console.log(`server is listening on ${port}`);
 });
