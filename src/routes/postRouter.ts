@@ -80,6 +80,7 @@ postRouter.route('/:postId')
             .populate('author')
             .populate('likes.author')
             .populate('comments.author')
+            .sort({ "comments.createdAt": -1 })
             .then((post) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
