@@ -10,8 +10,6 @@ router.use(bodyParser.json());
 /* GET users listing. */
 router.get('/', authenticate.verifyUser, function (req, res, next) {
   User.find({})
-    .populate('followers')
-    .populate('following')
     .then((users) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
