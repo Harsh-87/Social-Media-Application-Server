@@ -18,7 +18,15 @@ var User = new Schema({
     avatar: {
         type: String,
         default: ''
-    }
+    },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 // Adds local strategy plugin to this schema which means username and password fields will be added to the above schema and will be saved in database in encrypted form

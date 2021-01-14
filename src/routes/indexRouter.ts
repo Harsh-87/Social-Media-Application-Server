@@ -9,6 +9,8 @@ router.get('/', (req, res, next) => {
 
 router.get('/profile/:username', authenticate.verifyUser, function (req, res, next) {
   User.find({ username: req.params.username })
+    .populate('followers.follower')
+    .populate('following.person')
     .then((user) => {
       res.status(200);
       res.setHeader('Content-Type', 'application/json');

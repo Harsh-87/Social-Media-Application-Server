@@ -20,12 +20,14 @@ const upload = multer({ storage: storage });
 postRouter.route('/')
     .get(authenticate.verifyUser, (req, res, next) => {
         // Finds all the posts created
-        Posts.find({})
+        req.user['following'].push(req.user['_id']);
+        Posts.find({ author: { $in: req.user['following'] } })
             .sort({ "createdAt": -1 })
             .populate('author')
             .populate('likes.author')
             .populate('comments.author')
             .then((posts) => {
+                console.log(posts);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(posts);
@@ -34,14 +36,12 @@ postRouter.route('/')
     })
     .post(authenticate.verifyUser, upload.single('image'), (req, res, next) => {
         // Creates a post by user who is running this request
-        console.log(req.body);
         req.body.author = req.user['_id'];
-        if(req.file){
+        if (req.file) {
             req.body.image = req.file.path ? req.file.path.toString().slice(7) : undefined;
-        }else{
+        } else {
             req.body.image = undefined;
         }
-        console.log(req.body);
         const post = new Posts(req.body);
         post.save()
             .then((post) => {

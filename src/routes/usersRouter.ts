@@ -10,6 +10,8 @@ router.use(bodyParser.json());
 /* GET users listing. */
 router.get('/', authenticate.verifyUser, function (req, res, next) {
   User.find({})
+    .populate('followers')
+    .populate('following')
     .then((users) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -33,7 +35,7 @@ router.post('/signup', (req, res, next) => {
           user.lastname = req.body.lastname;
         if (req.body.email)
           user.email = req.body.email;
-        user.avatar = "https://i.pravatar.cc/150?img="+Math.floor(Math.random() * 30 + Math.random() * 30).toString();
+        user.avatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random() * 30 + Math.random() * 30).toString();
         user.save((err, user) => {
           if (err) {
             res.statusCode = 500;

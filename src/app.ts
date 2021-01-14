@@ -10,6 +10,7 @@ var config = require('./config');
 import mongoose = require("mongoose");
 
 // Requiring routes 
+var connectionRouter = require('./routes/connectionRouter')
 var indexRouter = require('./routes/indexRouter');
 var postRouter = require('./routes/postRouter');
 var usersRouter = require('./routes/usersRouter');
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname,'..', 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/connections', connectionRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
 
