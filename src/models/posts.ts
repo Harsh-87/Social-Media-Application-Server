@@ -1,8 +1,7 @@
 import mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Creating Schema for likes
-var likeSchema = new Schema({
+const likeSchema = new Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -11,8 +10,7 @@ var likeSchema = new Schema({
     timestamps: true
 });
 
-// Creating Schema for comments
-var commentSchema = new Schema({
+const commentSchema = new Schema({
     comment: {
         type: String,
         required: true
@@ -25,7 +23,6 @@ var commentSchema = new Schema({
     timestamps: true
 });
 
-// Creating Schema for Posts
 const postSchema = new Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -49,6 +46,6 @@ const postSchema = new Schema({
     timestamps: true
 });
 
-var Posts = mongoose.model('Post', postSchema);
+const Posts = mongoose.model('Post', postSchema);
 
 module.exports = Posts;

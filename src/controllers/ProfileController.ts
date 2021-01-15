@@ -1,9 +1,7 @@
-User = require("../models/user");
-
 exports.getProfile = (req, res, next) => {
     User.find({ username: req.params.username })
-        .populate('followers.follower')
-        .populate('following.person')
+        .populate('followers')
+        .populate('following')
         .then((user) => {
             res.status(200);
             res.setHeader('Content-Type', 'application/json');

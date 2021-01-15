@@ -1,7 +1,8 @@
 import express = require('express');
-var router = express.Router();
-var authenticate = require('../authenticate');
+const authenticate = require('../authenticate');
 const Profile = require("../controllers/ProfileController");
+
+const router = express.Router();
 
 router
   .get('/', (req, res, next) => {

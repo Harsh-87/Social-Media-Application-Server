@@ -1,5 +1,4 @@
 User = require("../models/user");
-
 exports.Signup = (req, res, next) => {
     User.register(new User({ username: req.body.username }),
         req.body.password, (err, user) => {
