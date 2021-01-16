@@ -9,7 +9,6 @@ var authenticate = require('./authenticate');
 var config = require('./config');
 import mongoose = require("mongoose");
 
-// Requiring routes 
 var connectionRouter = require('./routes/connectionRouter')
 var indexRouter = require('./routes/indexRouter');
 var postRouter = require('./routes/postRouter');
@@ -17,7 +16,6 @@ var usersRouter = require('./routes/usersRouter');
 
 const app = express();
 
-// Setting up DB using mongoose
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 connect.then((db) => {
@@ -29,7 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('views', __dirname + '/views');
 
-// passport auth
 app.use(session({
     secret: "Littlesecret",
     resave: false,

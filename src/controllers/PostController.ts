@@ -7,7 +7,6 @@ exports.findAllPosts = (req, res, next) => {
         .populate('likes.author')
         .populate('comments.author')
         .then((posts) => {
-            console.log(posts);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.json(posts);
@@ -54,7 +53,6 @@ exports.findPost = (req, res, next) => {
         .populate('author')
         .populate('likes.author')
         .populate('comments.author')
-        .sort({ "comments.createdAt": -1 })
         .then((post) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');

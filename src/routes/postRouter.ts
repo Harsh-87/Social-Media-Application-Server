@@ -31,15 +31,15 @@ postRouter.route('/:postId')
 
 postRouter.route('/:postId/comments')
     .get(authenticate.verifyUser, comment_controller.getAllComments)
-    .post(authenticate.verifyUser, comment_controller.createComment)
+    .post(authenticate.verifyUser, comment_controller.createComment, post_controller.findPost)
     .put(authenticate.verifyUser, not_supported_controller.notSupported)
     .delete(authenticate.verifyUser, comment_controller.deleteAllComments);
 
 postRouter.route('/:postId/comments/:commentId')
     .get(authenticate.verifyUser, comment_controller.getComment)
     .post(authenticate.verifyUser, not_supported_controller.notSupported)
-    .put(authenticate.verifyUser, comment_controller.editComment)
-    .delete(authenticate.verifyUser, comment_controller.deleteComment);
+    .put(authenticate.verifyUser, comment_controller.editComment, post_controller.findPost)
+    .delete(authenticate.verifyUser, comment_controller.deleteComment, post_controller.findPost);
 
 postRouter.route('/:postId/like')
     .get(authenticate.verifyUser, post_controller.likePost);
