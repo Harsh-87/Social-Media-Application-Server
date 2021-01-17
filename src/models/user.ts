@@ -1,8 +1,8 @@
 import mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 import passportLocalMongoose = require('passport-local-mongoose');
+const Schema = mongoose.Schema;
 
-var User = new Schema({
+const User = new Schema({
     firstname: {
         type: String,
         default: ''

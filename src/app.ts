@@ -4,15 +4,13 @@ import path = require('path');
 import logger = require('morgan');
 import passport = require('passport');
 import session = require('express-session');
-import multer = require("multer");
-var authenticate = require('./authenticate');
-var config = require('./config');
 import mongoose = require("mongoose");
 
-var connectionRouter = require('./routes/connectionRouter')
-var indexRouter = require('./routes/indexRouter');
-var postRouter = require('./routes/postRouter');
-var usersRouter = require('./routes/usersRouter');
+const config = require('./config');
+const connectionRouter = require('./routes/connectionRouter')
+const indexRouter = require('./routes/indexRouter');
+const postRouter = require('./routes/postRouter');
+const usersRouter = require('./routes/usersRouter');
 
 const app = express();
 
@@ -47,8 +45,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (err, req, res, next) {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(res.statusCode || 500);
     res.send(err.message);
 });

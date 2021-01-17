@@ -3,9 +3,7 @@ Posts = require("../models/posts");
 exports.getAllComments = async (req, res, next) => {
     const post = await Posts.findById(req.params.postId).populate('comments.author');
     if (post != null) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(post.comments);
+        next(post.comments);
     }
     else {
         res.status(404);
@@ -16,9 +14,7 @@ exports.getAllComments = async (req, res, next) => {
 exports.deleteAllComments = async (req, res, next) => {
     const post = await Posts.updateOne({ _id: req.params.postId }, { $set: { comments: [] } })
     if (post != null) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(post);
+        next(post);
     }
     else {
         res.status(404);
@@ -43,9 +39,7 @@ exports.createComment = async (req, res, next) => {
 exports.getComment = async (req, res, next) => {
     const post = await Posts.findById(req.params.postId).populate('comments.author');
     if (post != null && post.comments.id(req.params.commentId) != null) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(post.comments.id(req.params.commentId));
+        next(post.comments.id(req.params.commentId));
     }
     else if (post == null) {
         res.status(404);
